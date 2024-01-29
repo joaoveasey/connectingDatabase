@@ -23,7 +23,7 @@ namespace ConnectDatabaseC_
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btSave_Click(object sender, EventArgs e)
         {
             //connecting sql server and database
 
@@ -64,6 +64,8 @@ namespace ConnectDatabaseC_
 
             con.Open();
 
+            dataGridView1.Rows.Clear();
+
             string Query = "SELECT * FROM Names";
 
 
@@ -77,9 +79,46 @@ namespace ConnectDatabaseC_
             while (reader.Read())
 
             { 
-                dataGridView1.Rows.Add(reader["ID"], reader["FirstName"].ToString() + " " + reader["SecondName"].ToString());
+                dataGridView1.Rows.Add(reader["ID"], reader["FirstName"] + " " + reader["SecondName"]);
             }
             con.Close();
+        }
+
+        private void btUpdate_Click(object sender, EventArgs e)
+        {
+            //connecting sql server and database
+
+            string ConnectionString = "Data Source=LAPTOP-JLE3IV2Q;Initial Catalog=MyDB;Integrated Security=True";
+
+            //establish connection
+
+            SqlConnection con = new SqlConnection(ConnectionString);
+
+            //open connection
+
+            con.Open();
+
+            //prepare query
+            string NameID = tbID.Text;
+            string FirstName = tbFirstName.Text;
+            string SecondName = tbSecondName.Text;
+
+            string Query = "UPDATE Names SET FirstName = '"+FirstName+"', SecondName = '"+SecondName+"' WHERE ID = "+ NameID;
+
+            //execute query
+
+            SqlCommand cmd = new SqlCommand(Query, con);
+            cmd.ExecuteNonQuery();
+
+            //close connection
+
+            con.Close();
+
+            MessageBox.Show("data has been updated !");
+
+            tbFirstName.Text = "";
+            tbSecondName.Text = "";
+            tbID.Text = "";
         }
     }
 }
