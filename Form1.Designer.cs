@@ -40,6 +40,8 @@
             this.tbID = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.btUpdate = new System.Windows.Forms.Button();
+            this.btSearch = new System.Windows.Forms.Button();
+            this.btDelete = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -123,7 +125,7 @@
             // 
             this.tbID.Location = new System.Drawing.Point(106, 41);
             this.tbID.Name = "tbID";
-            this.tbID.Size = new System.Drawing.Size(65, 20);
+            this.tbID.Size = new System.Drawing.Size(92, 20);
             this.tbID.TabIndex = 8;
             // 
             // label3
@@ -145,11 +147,34 @@
             this.btUpdate.UseVisualStyleBackColor = true;
             this.btUpdate.Click += new System.EventHandler(this.btUpdate_Click);
             // 
+            // btSearch
+            // 
+            this.btSearch.Location = new System.Drawing.Point(204, 38);
+            this.btSearch.Name = "btSearch";
+            this.btSearch.Size = new System.Drawing.Size(75, 23);
+            this.btSearch.TabIndex = 10;
+            this.btSearch.Text = "search ";
+            this.btSearch.UseVisualStyleBackColor = true;
+            this.btSearch.Click += new System.EventHandler(this.btSearch_Click);
+            // 
+            // btDelete
+            // 
+            this.btDelete.BackColor = System.Drawing.Color.IndianRed;
+            this.btDelete.Location = new System.Drawing.Point(204, 207);
+            this.btDelete.Name = "btDelete";
+            this.btDelete.Size = new System.Drawing.Size(75, 23);
+            this.btDelete.TabIndex = 11;
+            this.btDelete.Text = "delete";
+            this.btDelete.UseVisualStyleBackColor = false;
+            this.btDelete.Click += new System.EventHandler(this.btDelete_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btDelete);
+            this.Controls.Add(this.btSearch);
             this.Controls.Add(this.btUpdate);
             this.Controls.Add(this.tbID);
             this.Controls.Add(this.label3);
@@ -182,6 +207,8 @@
         private System.Windows.Forms.TextBox tbID;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btUpdate;
+        private System.Windows.Forms.Button btSearch;
+        private System.Windows.Forms.Button btDelete;
     }
 }
 

@@ -120,5 +120,71 @@ namespace ConnectDatabaseC_
             tbSecondName.Text = "";
             tbID.Text = "";
         }
+
+        private void btSearch_Click(object sender, EventArgs e)
+        {
+            //connecting sql server and database
+
+            string ConnectionString = "Data Source=LAPTOP-JLE3IV2Q;Initial Catalog=MyDB;Integrated Security=True";
+
+            //establish connection
+
+            SqlConnection con = new SqlConnection(ConnectionString);
+
+            //open connection
+
+            con.Open();
+
+            //prepare query
+            string NameID = tbID.Text;
+
+            string Query = "SELECT * FROM Names WHERE ID = "+ NameID;
+
+            //execute query
+
+            SqlCommand cmd = new SqlCommand(Query, con);
+            var reader = cmd.ExecuteReader();
+
+
+            if (reader.Read())
+            {
+                tbFirstName.Text = reader["FirstName"].ToString();
+                tbSecondName.Text = reader["SecondName"].ToString();
+            }
+            else
+                MessageBox.Show("no record found");
+            //close connection
+
+            con.Close();
+        }
+
+        private void btDelete_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("do you want to delete this record?" , "confirm delete", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                string ConnectionString = "Data Source=LAPTOP-JLE3IV2Q;Initial Catalog=MyDB;Integrated Security=True";
+
+                SqlConnection con = new SqlConnection(ConnectionString);
+
+                con.Open();
+
+                string NameID = tbID.Text;
+
+                string Query = "DELETE FROM Names WHERE ID = " + NameID;
+
+                SqlCommand cmd = new SqlCommand(Query, con);
+                cmd.ExecuteNonQuery();
+
+                con.Close();
+
+                MessageBox.Show("data has been deleted!");
+
+                tbFirstName.Text = "";
+                tbSecondName.Text = "";
+                tbID.Text = "";
+
+                btShowData_Click(null, null);
+            }
+        }
     }
 }
