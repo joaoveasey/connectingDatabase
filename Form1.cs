@@ -25,49 +25,39 @@ namespace ConnectDatabaseC_
 
         private void btSave_Click(object sender, EventArgs e)
         {
-            //connecting sql server and database
-
             string ConnectionString = "Data Source=LAPTOP-JLE3IV2Q;Initial Catalog=MyDB;Integrated Security=True";
-
-            //establish connection
 
             SqlConnection con = new SqlConnection(ConnectionString);
 
-            //open connection
-
             con.Open();
-
-            //prepare query
 
             string FirstName = tbFirstName.Text;
             string SecondName = tbSecondName.Text;
+            string Phone = tbPhone.Text;
+            string CEP = tbCep.Text;
+            string Email = tbEmail.Text;
+            string CpfCnpj = tbCpfCnpj.Text;
+            DateTime dateTime = DateTime.Now;
 
-            string Query = "INSERT INTO Names (FirstName, SecondName) VALUES ('" + FirstName + "','" + SecondName + "')";
-
-            //execute query
+            string Query = "INSERT INTO Pessoa (FirstName, SecondName, Phone, CEP, Email, [CPF/CNPJ], DataHora) VALUES " +
+                " (' " + FirstName + "', '" + SecondName + "','" + Phone + "', '" + CEP + "', '" + Email + "', '" + CpfCnpj + "', '" + dateTime +"')";
 
             SqlCommand cmd = new SqlCommand(Query, con);
             cmd.ExecuteNonQuery();
 
-            //close connection
-
             con.Close();
 
-            MessageBox.Show("data has been saved!");
+            MessageBox.Show("Data has been saved!");
         }
 
         private void btShowData_Click(object sender, EventArgs e)
         {
             string ConnectionString = "Data Source=LAPTOP-JLE3IV2Q;Initial Catalog=MyDB;Integrated Security=True";
-
             SqlConnection con = new SqlConnection(ConnectionString);
-
             con.Open();
-
             dataGridView1.Rows.Clear();
 
-            string Query = "SELECT * FROM Names";
-
+            string Query = "SELECT * FROM Pessoa";
 
             SqlCommand cmd = new SqlCommand(Query, con);
 
@@ -75,72 +65,63 @@ namespace ConnectDatabaseC_
 
             var reader = cmd.ExecuteReader();
 
-            //2nd method is in 6:50
             while (reader.Read())
 
-            { 
-                dataGridView1.Rows.Add(reader["ID"], reader["FirstName"] + " " + reader["SecondName"]);
+            {
+                dataGridView1.Rows.Add(
+                    reader["ID"], reader["FirstName"] + " " + reader["SecondName"], reader["Phone"], reader["CEP"], 
+                    reader["Email"], reader["CPF/CNPJ"], reader["DataHora"]);
             }
             con.Close();
         }
 
         private void btUpdate_Click(object sender, EventArgs e)
         {
-            //connecting sql server and database
-
             string ConnectionString = "Data Source=LAPTOP-JLE3IV2Q;Initial Catalog=MyDB;Integrated Security=True";
 
-            //establish connection
-
             SqlConnection con = new SqlConnection(ConnectionString);
-
-            //open connection
-
             con.Open();
 
-            //prepare query
             string NameID = tbID.Text;
             string FirstName = tbFirstName.Text;
             string SecondName = tbSecondName.Text;
+            string Phone = tbPhone.Text;
+            string CEP = tbCep.Text;
+            string Email = tbEmail.Text;
+            string CpfCnpj = tbCpfCnpj.Text;
 
-            string Query = "UPDATE Names SET FirstName = '"+FirstName+"', SecondName = '"+SecondName+"' WHERE ID = "+ NameID;
-
-            //execute query
+            string Query = "UPDATE Pessoa " +
+                            "SET FirstName = '"+FirstName+"', SecondName = '"+SecondName+"', Phone = '" +Phone+"' , CEP = '"+CEP+ "', Email = '"+Email+"', [CPF/CNPJ] = '" +CpfCnpj+ "' " +
+                            "WHERE ID = "+ NameID;
 
             SqlCommand cmd = new SqlCommand(Query, con);
             cmd.ExecuteNonQuery();
 
-            //close connection
-
             con.Close();
 
-            MessageBox.Show("data has been updated !");
+            MessageBox.Show("Data has been updated !");
 
             tbFirstName.Text = "";
             tbSecondName.Text = "";
             tbID.Text = "";
+            tbPhone.Text = "";
+            tbCep.Text = "";
+            tbEmail.Text = "";
+            tbCpfCnpj.Text = "";
         }
 
         private void btSearch_Click(object sender, EventArgs e)
         {
-            //connecting sql server and database
 
             string ConnectionString = "Data Source=LAPTOP-JLE3IV2Q;Initial Catalog=MyDB;Integrated Security=True";
 
-            //establish connection
-
             SqlConnection con = new SqlConnection(ConnectionString);
-
-            //open connection
 
             con.Open();
 
-            //prepare query
             string NameID = tbID.Text;
 
-            string Query = "SELECT * FROM Names WHERE ID = "+ NameID;
-
-            //execute query
+            string Query = "SELECT * FROM Pessoa WHERE ID = "+ NameID;
 
             SqlCommand cmd = new SqlCommand(Query, con);
             var reader = cmd.ExecuteReader();
@@ -150,17 +131,20 @@ namespace ConnectDatabaseC_
             {
                 tbFirstName.Text = reader["FirstName"].ToString();
                 tbSecondName.Text = reader["SecondName"].ToString();
+                tbPhone.Text = reader["Email"].ToString();
+                tbCep.Text = reader["Cep"].ToString();
+                tbEmail.Text = reader["Email"].ToString();
+                tbCpfCnpj.Text = reader["CPF/CNPJ"].ToString();
             }
             else
-                MessageBox.Show("no record found");
-            //close connection
+                MessageBox.Show("No records found");
 
             con.Close();
         }
 
         private void btDelete_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("do you want to delete this record?" , "confirm delete", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            if (MessageBox.Show("Do you want to delete this record?" , "Confirm delete", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 string ConnectionString = "Data Source=LAPTOP-JLE3IV2Q;Initial Catalog=MyDB;Integrated Security=True";
 
@@ -170,21 +154,60 @@ namespace ConnectDatabaseC_
 
                 string NameID = tbID.Text;
 
-                string Query = "DELETE FROM Names WHERE ID = " + NameID;
+                string Query = "DELETE FROM Pessoa WHERE ID = " + NameID;
 
                 SqlCommand cmd = new SqlCommand(Query, con);
                 cmd.ExecuteNonQuery();
 
                 con.Close();
 
-                MessageBox.Show("data has been deleted!");
+                MessageBox.Show("Data has been deleted!");
 
                 tbFirstName.Text = "";
                 tbSecondName.Text = "";
                 tbID.Text = "";
+                tbPhone.Text = "";
+                tbCep.Text = "";
+                tbEmail.Text = "";
+                tbCpfCnpj.Text = ""; ;
 
                 btShowData_Click(null, null);
             }
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label6_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label7_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }
